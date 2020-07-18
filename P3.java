@@ -91,11 +91,26 @@ public class P3 {
     unigramProb = new HashMap<>();
     String output = ""; // temporary space to store output String
     transitionProbability(1, false);
-    for(char currentCharacter : alphabet) {
-      output += String.format("%.4f ", unigramProb.get(String.valueOf(currentCharacter)));
+    for(char x : alphabet) {
+      output += String.format("%.4f ", unigramProb.get(String.valueOf(x)));
     }
     resultFileWriter.append("@unigram\n");
     resultFileWriter.append(output.trim().replace(" ", ",") + "\n");
+    resultFileWriter.flush();
+
+    // Q3: Bigram Probability
+    bigramProb = new HashMap<>();
+    output = ""; // temporary space to store output String
+    transitionProbability(2, false);
+    for(char x : alphabet) {
+      for(char y : alphabet) {
+        String key = String.valueOf(x) + String.valueOf(y);
+        output += String.format("%.4f ", bigramProb.get(key));
+      }
+      output = output.trim().replace(" ", ",") + "\n";
+    }
+    resultFileWriter.append("@bigram\n");
+    resultFileWriter.append(output);
     resultFileWriter.flush();
 
     // Close resultFileWriter
