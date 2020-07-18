@@ -43,9 +43,11 @@ public class P3 {
   private static HashMap<String, Integer> bigramCount = new HashMap<>();
   private static HashMap<String, Integer> trigramCount = new HashMap<>();
   // HashMap to store probability for each model
-  private static HashMap<String, Integer> unigramProb = new HashMap<>();
-  private static HashMap<String, Integer> bigramProb = new HashMap<>();
-  private static HashMap<String, Integer> trigramProb = new HashMap<>();
+  private static HashMap<String, Double> unigramProb;
+  private static HashMap<String, Double> bigramProb;
+  private static HashMap<String, Double> trigramProb;
+  // Will be used later to calculate unigram probability
+  private static int lengthScript;
   // space + alphabet
   private static char[] alphabet = " abcdefghijklmnopqrstuvwxyz".toCharArray();
 
@@ -80,9 +82,21 @@ public class P3 {
     script = script.toLowerCase() // make everything lower case
                    .replaceAll("[^a-z ]", " ") // remove non-characters except for space
                    .replaceAll(" +", " "); // make space to single space
+    lengthScript = script.length();
     
     // counting number of occurance for each unigram, bigram, and trigram models
     countNGrams(script);
+
+    // Q2: Unigram Probability
+    unigramProb = new HashMap<>();
+    String output = ""; // temporary space to store output String
+    transitionProbability(1, false);
+    for(char currentCharacter : alphabet) {
+      output += String.format("%.4f ", unigramProb.get(String.valueOf(currentCharacter)));
+    }
+    resultFileWriter.append("@unigram\n");
+    resultFileWriter.append(output.trim().replace(" ", ",") + "\n");
+    resultFileWriter.flush();
 
     // Close resultFileWriter
     resultFileWriter.append("@answer_10\nNone");
@@ -123,6 +137,38 @@ public class P3 {
         trigramCount.put(searchTarget, count);
         }
       }
+    }
+  }
+
+  /**
+   * Helper method to calculate transition probability
+   * 
+   * @param n nGram model (only support 1, 2, 3)
+   * @param laplaceSmoothing 1 if you want to use laplace smoothing, 0 otherwise
+   */
+  private static void transitionProbability(int n, boolean laplaceSmoothing) {
+    double probability;
+
+    if(n == 1) { // unigram
+      for(String key : unigramCount.keySet()) {
+        // compute P(x)
+        probability = (double)unigramCount.get(key) / lengthScript;
+        unigramProb.put(key, probability);
+      }
+    } else if(n == 2) { // bigram
+      for(String key : bigramCount.keySet()) {
+        // compute P(y|x)
+        probability = (double)bigramCount.get(key) / unigramCount.get(key.substring(0, 1));
+        bigramProb.put(key, probability);
+      }
+    } else if(n == 3) { // trigram
+      for(String key : trigramCount.keySet()) {
+        // compute P(z|xy)
+        probability = (double)trigramCount.get(key) / bigramCount.get(key.substring(0, 2));
+        trigramProb.put(key, probability);
+      }
+    } else {
+      System.out.println("Invalid nGram");
     }
   }
 }
