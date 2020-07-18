@@ -21,13 +21,21 @@ Also, need to make everything lower case, remove all characters except for lette
 
 ## Tasks
 - Data Preprocessing, Unigram Model
-  - Related Question: Q1
+  - Related Question: Q1, Q2
 - Construct the bigram character (letters + space) transition probability table. Put "space" first then "a", "b", "c", ..., "z". It should be a 27 by 27 matrix.
 - Construct the trigram transition probability table. It could be a 27 by 27 by 27 array or a 729 by 27 matrix.
 - Generate 26 sentences consists of 1000 characters each using the trigram model starting from "a", "b", "c", ..., "z". You should use the bigram model to generate the second character and switch to the bigram model when the current two-character sequence never appeared in the script.
 - Train a Naive Bayes classifier. You should use an uniform prior, compute the likelihood Pr{Letter | Document}, compute the posterior probabilities Pr{Document | Letter} and test your classifier on the 26 random sentences you generated
 
+### Key Ideas
+- Using Key-value pair (Use (Hash)Map data structure)
+  - Use character(String) as a key, and associated probability as value
+- Replace string token(character) to empty string and compare the length of original script and replaced string to count the number of occurance.
+
 
 ## Questions
 - **Q1**  
   enter the name of the movie script
+- **Q2**  
+  (`unigram`) Input the unigram probabilities (27 numbers, comma-separated, rounded to 4 decimal places, "space" first, then "a", "b", ...).
+  - Test for data-preprocessing, [counting function](), and [probability calculation]().
