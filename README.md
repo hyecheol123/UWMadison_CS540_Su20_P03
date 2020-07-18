@@ -23,7 +23,7 @@ Also, need to make everything lower case, remove all characters except for lette
 - Data Preprocessing, Unigram Model
   - Related Question: Q1, Q2
 - Construct the bigram character (letters + space) transition probability table. Put "space" first then "a", "b", "c", ..., "z". It should be a 27 by 27 matrix.
-  - Related Question: Q3
+  - Related Question: Q3, Q4
 - Construct the trigram transition probability table. It could be a 27 by 27 by 27 array or a 729 by 27 matrix.
 - Generate 26 sentences consists of 1000 characters each using the trigram model starting from "a", "b", "c", ..., "z". You should use the bigram model to generate the second character and switch to the bigram model when the current two-character sequence never appeared in the script.
 - Train a Naive Bayes classifier. You should use an uniform prior, compute the likelihood Pr{Letter | Document}, compute the posterior probabilities Pr{Document | Letter} and test your classifier on the 26 random sentences you generated
@@ -43,3 +43,6 @@ Also, need to make everything lower case, remove all characters except for lette
 - **Q3**  
   (`bigram`) Input the bigram transition probabilities without Laplace smoothing (27 lines, each line containing 27 numbers, comma-separated, rounded to 4 decimal places, "space" first, then "a", "b", ...).
   - Test for [counting function]() and [probability calculation]().
+- **Q4**  
+  (`bigram_smooth`) Input the bigram transition probabilities with Laplace smoothing (27 lines, each line containing 27 numbers, comma-separated, rounded to 4 decimal places, "space" first, then "a", "b", ...).
+  - Test for [probability calculation]().
