@@ -39,15 +39,15 @@ import java.util.Scanner;
  */
 public class P3 {
   // HashMap to Store counts for each models
-  private static HashMap<String, Integer> unigramCount = new HashMap<>();
-  private static HashMap<String, Integer> bigramCount = new HashMap<>();
-  private static HashMap<String, Integer> trigramCount = new HashMap<>();
+  private static HashMap<String, Integer> unigram_count = new HashMap<>();
+  private static HashMap<String, Integer> bigram_count = new HashMap<>();
+  private static HashMap<String, Integer> trigram_count = new HashMap<>();
   // HashMap to store probability for each model
-  private static HashMap<String, Double> unigramProb;
-  private static HashMap<String, Double> bigramProb;
-  private static HashMap<String, Double> trigramProb;
+  private static HashMap<String, Double> unigram_prob;
+  private static HashMap<String, Double> bigram_prob;
+  private static HashMap<String, Double> trigram_prob;
   // Will be used later to calculate unigram probability
-  private static int lengthScript;
+  private static int length_script;
   // space + alphabet
   private static char[] alphabet = " abcdefghijklmnopqrstuvwxyz".toCharArray();
 
@@ -58,64 +58,64 @@ public class P3 {
    * @throws IOException Occurred when I/O Operation Interrupted
    */
   public static void main(String[] args) throws IOException {
-    // Get netID and result file location
-    Scanner consoleScnr = new Scanner(System.in);
+    // Get net_id and result file location
+    Scanner console_scnr = new Scanner(System.in);
     System.out.print("Enter Result File Location(Name): ");
-    String resultFileLoc = consoleScnr.nextLine();
-    System.out.println("Need NetID to properly format result file");
-    System.out.print("Enter Your UWMadison NetID: ");
-    String netID = consoleScnr.nextLine();
-    consoleScnr.close();
-    // Initialize resultFileWriter
-    BufferedWriter resultFileWriter = new BufferedWriter(new FileWriter(new File(resultFileLoc)));
+    String result_file_loc = console_scnr.nextLine();
+    System.out.println("Need net_id to properly format result file");
+    System.out.print("Enter Your UWMadison net_id: ");
+    String net_id = console_scnr.nextLine();
+    console_scnr.close();
+    // Initialize result_file_writer
+    BufferedWriter result_file_writer = new BufferedWriter(new FileWriter(new File(result_file_loc)));
     // Format header of result file
-    resultFileWriter.append("Outputs:\n@id\n" + netID + "\n");
-    resultFileWriter.flush();
+    result_file_writer.append("Outputs:\n@id\n" + net_id + "\n");
+    result_file_writer.flush();
 
     // Read a script of the movie from txt file
     String script = new String(Files.readAllBytes(Paths.get("Inception.txt")));
     // Q1: enter the name of the movie script
-    resultFileWriter.append("@answer_1\nInception\n");
-    resultFileWriter.flush();
+    result_file_writer.append("@answer_1\nInception\n");
+    result_file_writer.flush();
 
     // Process the Script
     script = script.toLowerCase() // make everything lower case
                    .replaceAll("[^a-z ]", " ") // remove non-characters except for space
                    .replaceAll(" +", " "); // make space to single space
-    lengthScript = script.length();
+    length_script = script.length();
     
     // counting number of occurance for each unigram, bigram, and trigram models
     countNGrams(script);
 
     // Q2: Unigram Probability
-    unigramProb = new HashMap<>();
+    unigram_prob = new HashMap<>();
     String output = ""; // temporary space to store output String
     transitionProbability(1, false);
     for(char x : alphabet) {
-      output += String.format("%.4f ", unigramProb.get(String.valueOf(x)));
+      output += String.format("%.4f ", unigram_prob.get(String.valueOf(x)));
     }
-    resultFileWriter.append("@unigram\n");
-    resultFileWriter.append(output.trim().replace(" ", ",") + "\n");
-    resultFileWriter.flush();
+    result_file_writer.append("@unigram\n");
+    result_file_writer.append(output.trim().replace(" ", ",") + "\n");
+    result_file_writer.flush();
 
     // Q3: Bigram Probability
-    bigramProb = new HashMap<>();
+    bigram_prob = new HashMap<>();
     output = ""; // temporary space to store output String
     transitionProbability(2, false);
     for(char x : alphabet) {
       for(char y : alphabet) {
         String key = String.valueOf(x) + String.valueOf(y);
-        output += String.format("%.4f ", bigramProb.get(key));
+        output += String.format("%.4f ", bigram_prob.get(key));
       }
       output = output.trim().replace(" ", ",") + "\n";
     }
-    resultFileWriter.append("@bigram\n");
-    resultFileWriter.append(output);
-    resultFileWriter.flush();
+    result_file_writer.append("@bigram\n");
+    result_file_writer.append(output);
+    result_file_writer.flush();
 
-    // Close resultFileWriter
-    resultFileWriter.append("@answer_10\nNone");
-    resultFileWriter.close();
+    // Close result_file_writer
+    result_file_writer.append("@answer_10\nNone");
+    result_file_writer.close();
   }
 
   /**
@@ -129,16 +129,16 @@ public class P3 {
     // Unigram
     for(int i = 0; i < alphabet.length; i++) {
       count = script.length() - script.replace(String.valueOf(alphabet[i]), "").length();
-      unigramCount.put(String.valueOf(alphabet[i]), count);
+      unigram_count.put(String.valueOf(alphabet[i]), count);
     }
 
     // Bigram
     for(int i = 0; i < alphabet.length; i++) {
       for(int j = 0; j < alphabet.length; j++) {
-        String searchTarget = String.valueOf(alphabet[i]) + String.valueOf(alphabet[j]);
+        String search_target = String.valueOf(alphabet[i]) + String.valueOf(alphabet[j]);
         // each occurance will decrease total length of string by 2
-        count = (script.length() - script.replace(searchTarget, "").length()) / 2;
-        bigramCount.put(searchTarget, count);
+        count = (script.length() - script.replace(search_target, "").length()) / 2;
+        bigram_count.put(search_target, count);
       }
     }
 
@@ -146,10 +146,10 @@ public class P3 {
     for(int i = 0; i < alphabet.length; i++) {
       for(int j = 0; j < alphabet.length; j++) {
         for(int k = 0; k < alphabet.length; k++) {
-        String searchTarget = String.valueOf(alphabet[i]) + String.valueOf(alphabet[j]) + String.valueOf(alphabet[k]);
+        String search_target = String.valueOf(alphabet[i]) + String.valueOf(alphabet[j]) + String.valueOf(alphabet[k]);
         // each occurance will decrease total length of string by 3
-        count = (script.length() - script.replace(searchTarget, "").length()) / 3;
-        trigramCount.put(searchTarget, count);
+        count = (script.length() - script.replace(search_target, "").length()) / 3;
+        trigram_count.put(search_target, count);
         }
       }
     }
@@ -159,28 +159,28 @@ public class P3 {
    * Helper method to calculate transition probability
    * 
    * @param n nGram model (only support 1, 2, 3)
-   * @param laplaceSmoothing 1 if you want to use laplace smoothing, 0 otherwise
+   * @param laplace_smoothing 1 if you want to use laplace smoothing, 0 otherwise
    */
-  private static void transitionProbability(int n, boolean laplaceSmoothing) {
+  private static void transitionProbability(int n, boolean laplace_smoothing) {
     double probability;
 
     if(n == 1) { // unigram
-      for(String key : unigramCount.keySet()) {
+      for(String key : unigram_count.keySet()) {
         // compute P(x)
-        probability = (double)unigramCount.get(key) / lengthScript;
-        unigramProb.put(key, probability);
+        probability = (double)unigram_count.get(key) / length_script;
+        unigram_prob.put(key, probability);
       }
     } else if(n == 2) { // bigram
-      for(String key : bigramCount.keySet()) {
+      for(String key : bigram_count.keySet()) {
         // compute P(y|x)
-        probability = (double)bigramCount.get(key) / unigramCount.get(key.substring(0, 1));
-        bigramProb.put(key, probability);
+        probability = (double)bigram_count.get(key) / unigram_count.get(key.substring(0, 1));
+        bigram_prob.put(key, probability);
       }
     } else if(n == 3) { // trigram
-      for(String key : trigramCount.keySet()) {
+      for(String key : trigram_count.keySet()) {
         // compute P(z|xy)
-        probability = (double)trigramCount.get(key) / bigramCount.get(key.substring(0, 2));
-        trigramProb.put(key, probability);
+        probability = (double)trigram_count.get(key) / bigram_count.get(key.substring(0, 2));
+        trigram_prob.put(key, probability);
       }
     } else {
       System.out.println("Invalid nGram");
