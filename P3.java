@@ -133,6 +133,10 @@ public class P3 {
     result_file_writer.append(output);
     result_file_writer.flush();
 
+    // trigram transition probability table
+    trigram_prob = new HashMap<>();
+    transitionProbability(3, true);
+
     // Close result_file_writer
     result_file_writer.append("@answer_10\nNone");
     result_file_writer.close();
