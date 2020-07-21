@@ -174,15 +174,20 @@ public class P3 {
 
     // Q8: Enter posterior probabilities of the Naive Bayes estimator for my script (random_script.txt)
     // Pr{D = Doc1 | "a"} = Pr{"a", D = Doc1} / (Pr{"a", D = Doc1} + Pr{"a", D = Doc0})
+    double[] posterior_rnd = new double[alphabet.length]; // place to store calculated result for random document
     output = ""; // temporary space to store output String
-    for(char x : alphabet) {
-      double doc_t_prob = likelihood_prob.get(String.valueOf(x)) * 0.5;
-      double doc_other_prob = unigram_prob.get(String.valueOf(x)) * 0.5;
-      output += String.format("%.4f ", doc_t_prob / (doc_t_prob + doc_other_prob));
+    for(int i = 0; i < alphabet.length; i++) { // calculate posterior probability for all characters
+      double doc_t_prob = likelihood_prob.get(String.valueOf(alphabet[i])) * 0.5;
+      double doc_other_prob = unigram_prob.get(String.valueOf(alphabet[i])) * 0.5;
+      posterior_rnd[i] = doc_t_prob / (doc_t_prob + doc_other_prob);
+      // generating output
+      output += String.format("%.4f ", posterior_rnd[i]);
     }
     result_file_writer.append("@posterior\n");
     result_file_writer.append(output.trim().replace(" ", ",") + "\n");
     result_file_writer.flush();
+
+    // Q9: Use the Naive Bayes model to predict which document the 26 sentences
 
     // Close result_file_writer
     result_file_writer.append("@answer_10\nNone");

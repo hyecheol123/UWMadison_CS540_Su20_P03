@@ -28,7 +28,7 @@ Also, need to make everything lower case, remove all characters except for lette
 - Generate 26 sentences consists of 1000 characters each using the trigram model starting from "a", "b", "c", ..., "z". You should use the bigram model to generate the second character and switch to the bigram model when the current two-character sequence never appeared in the script.
   - Related Question: Q5, Q6
 - Train a Naive Bayes classifier. You should use an uniform prior, compute the likelihood Pr{Letter | Document}, compute the posterior probabilities Pr{Document | Letter} and test your classifier on the 26 random sentences you generated
-  - Related Question: Q7
+  - Related Question: Q7, Q8, Q9
 
 ### Key Ideas
 - Using Key-value pair (Use (Hash)Map data structure)
@@ -63,3 +63,7 @@ Also, need to make everything lower case, remove all characters except for lette
   (`posterior`) Enter posterior probabilities of the Naive Bayes estimator for my script. (27 numbers, comma separated, rounded to 4 decimal places, Pr{D = my script | "*space*"}, Pr{D = my script | "a"}, Pr{D = my script | "b"}, ...).
   - Pr{D = Doc1 | "a"} = Pr{"a", D = Doc1} / (Pr{"a", D = Doc1} + Pr{"a", D = Doc0})
   - Test for [Posterior Likelihood Calculation]() based on previously calculated likelihood and unigram probability
+- **Q9**  
+  (predictions) Use the Naive Bayes model to predict which document the 26 sentences your generated in Question 5. Remember to compare the sum of log probabilities instead of the direct product of probabilities. (26 numbers, either 0 or 1, 0 is the label for your script, 1 is the label for mine)
+  - Use log{Pr(D = doc_x | first letter)} + log{Pr(D = doc_x | first letter)} + ... to compare
+  - Code to compare locates [here]()
