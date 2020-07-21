@@ -172,6 +172,18 @@ public class P3 {
     result_file_writer.append(output.trim().replace(" ", ",") + "\n");
     result_file_writer.flush();
 
+    // Q8: Enter posterior probabilities of the Naive Bayes estimator for my script (random_script.txt)
+    // Pr{D = Doc1 | "a"} = Pr{"a", D = Doc1} / (Pr{"a", D = Doc1} + Pr{"a", D = Doc0})
+    output = ""; // temporary space to store output String
+    for(char x : alphabet) {
+      double doc_t_prob = likelihood_prob.get(String.valueOf(x)) * 0.5;
+      double doc_other_prob = unigram_prob.get(String.valueOf(x)) * 0.5;
+      output += String.format("%.4f ", doc_t_prob / (doc_t_prob + doc_other_prob));
+    }
+    result_file_writer.append("@posterior\n");
+    result_file_writer.append(output.trim().replace(" ", ",") + "\n");
+    result_file_writer.flush();
+
     // Close result_file_writer
     result_file_writer.append("@answer_10\nNone");
     result_file_writer.close();

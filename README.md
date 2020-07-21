@@ -56,6 +56,10 @@ Also, need to make everything lower case, remove all characters except for lette
   - Any sentences contain some English words (as a result of few experiments).
   - Therefore, just submitting the sentence starts with 'h'
 - **Q7**  
-  (`likelihood`) Enter likelihood probabilities of the Naive Bayes estimator for my script. (27 numbers, comma separated, rounded to 4 decimal places, Pr{"space" | D = my script}, Pr{"a" | D = my script}, Pr{"b" | D = my script}, ...).
+  (`likelihood`) Enter likelihood probabilities of the Naive Bayes estimator for my script. (27 numbers, comma separated, rounded to 4 decimal places, Pr{"*space*" | D = my script}, Pr{"a" | D = my script}, Pr{"b" | D = my script}, ...).
   - count the number of each character's occurance, and divide by the total number of characters in the script
   - Test for [likelihood calculation function]().
+- **Q8**  
+  (`posterior`) Enter posterior probabilities of the Naive Bayes estimator for my script. (27 numbers, comma separated, rounded to 4 decimal places, Pr{D = my script | "*space*"}, Pr{D = my script | "a"}, Pr{D = my script | "b"}, ...).
+  - Pr{D = Doc1 | "a"} = Pr{"a", D = Doc1} / (Pr{"a", D = Doc1} + Pr{"a", D = Doc0})
+  - Test for [Posterior Likelihood Calculation]() based on previously calculated likelihood and unigram probability
