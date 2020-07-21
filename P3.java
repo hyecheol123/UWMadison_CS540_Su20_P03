@@ -196,12 +196,23 @@ public class P3 {
       // Make sentence to char array to access all characters easily
       char[] char_array = sentence.toCharArray();
 
+      // Calculate likelihood
+      // log{Pr(D = doc_x | first letter)} + log{Pr(D = doc_x | first letter)} + ...
       for(char current_char : char_array) {
-        // log{Pr(D = doc_x | first letter)} + log{Pr(D = doc_x | first letter)} + ...
-        
+        rnd_likelihood += Math.log(posterior_rnd.get(current_char));
+        english_likelihood += Math.log(1 - posterior_rnd.get(current_char));
+      }
+
+      // Compare the likelihood
+      if(english_likelihood > rnd_likelihood) {
+        output += "0 ";
+      } else {
+        output += "1 ";
       }
     }
-    // log{Pr(D = doc_x | first letter)} + log{Pr(D = doc_x | first letter)} + ...
+    result_file_writer.append("@predictions\n");
+    result_file_writer.append(output.trim().replace(" ", ",") + "\n");
+    result_file_writer.flush();
 
     // Close result_file_writer
     result_file_writer.append("@answer_10\nNone");

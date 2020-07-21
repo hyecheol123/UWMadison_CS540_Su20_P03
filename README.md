@@ -64,6 +64,6 @@ Also, need to make everything lower case, remove all characters except for lette
   - Pr{D = Doc1 | "a"} = Pr{"a", D = Doc1} / (Pr{"a", D = Doc1} + Pr{"a", D = Doc0})
   - Test for [Posterior Likelihood Calculation]() based on previously calculated likelihood and unigram probability
 - **Q9**  
-  (predictions) Use the Naive Bayes model to predict which document the 26 sentences your generated in Question 5. Remember to compare the sum of log probabilities instead of the direct product of probabilities. (26 numbers, either 0 or 1, 0 is the label for your script, 1 is the label for mine)
+  (`predictions`) Use the Naive Bayes model to predict which document the 26 sentences your generated in Question 5. Remember to compare the sum of log probabilities instead of the direct product of probabilities. (26 numbers, either 0 or 1, 0 is the label for your script, 1 is the label for mine)
   - Use log{Pr(D = doc_x | first letter)} + log{Pr(D = doc_x | first letter)} + ... to compare
   - Code to compare locates [here]()
