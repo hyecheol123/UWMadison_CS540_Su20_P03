@@ -28,6 +28,7 @@ Also, need to make everything lower case, remove all characters except for lette
 - Generate 26 sentences consists of 1000 characters each using the trigram model starting from "a", "b", "c", ..., "z". You should use the bigram model to generate the second character and switch to the bigram model when the current two-character sequence never appeared in the script.
   - Related Question: Q5, Q6
 - Train a Naive Bayes classifier. You should use an uniform prior, compute the likelihood Pr{Letter | Document}, compute the posterior probabilities Pr{Document | Letter} and test your classifier on the 26 random sentences you generated
+  - Related Question: Q7
 
 ### Key Ideas
 - Using Key-value pair (Use (Hash)Map data structure)
@@ -54,3 +55,7 @@ Also, need to make everything lower case, remove all characters except for lette
   Find one interesting sentence that at least contains English words.
   - Any sentences contain some English words (as a result of few experiments).
   - Therefore, just submitting the sentence starts with 'h'
+- **Q7**  
+  (`likelihood`) Enter likelihood probabilities of the Naive Bayes estimator for my script. (27 numbers, comma separated, rounded to 4 decimal places, Pr{"space" | D = my script}, Pr{"a" | D = my script}, Pr{"b" | D = my script}, ...).
+  - count the number of each character's occurance, and divide by the total number of characters in the script
+  - Test for [likelihood calculation function]().

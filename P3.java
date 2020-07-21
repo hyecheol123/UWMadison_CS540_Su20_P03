@@ -153,6 +153,25 @@ public class P3 {
     result_file_writer.append(generated_string[7] + "\n");
     result_file_writer.flush();
 
+    // Likelihood Calculation for Randomly Generated(Given) non-English String
+    HashMap<String, Double> likelihood_prob = new HashMap<>(); // HashMap to store likelihood probability
+    // Read a script of the movie from txt file
+    String rnd_script = new String(Files.readAllBytes(Paths.get("random_script.txt")));
+    // Process the Script
+    rnd_script = rnd_script.toLowerCase() // make everything lower case
+                   .replaceAll("[^a-z ]", " ") // remove non-characters except for space
+                   .replaceAll(" +", " "); // make space to single space
+    // calculate likelihood
+    likelihoodProbCalculate(rnd_script, likelihood_prob);
+    // Q7: Enter likelihood probabilities of the Naive Bayes estimator for my script (random_script.txt)
+    output = ""; // temporary space to store output String
+    for(char x : alphabet) {
+      output += String.format("%.4f ", likelihood_prob.get(String.valueOf(x)));
+    }
+    result_file_writer.append("@likelihood\n");
+    result_file_writer.append(output.trim().replace(" ", ",") + "\n");
+    result_file_writer.flush();
+
     // Close result_file_writer
     result_file_writer.append("@answer_10\nNone");
     result_file_writer.close();
@@ -299,5 +318,20 @@ public class P3 {
     }
 
     return generated_string;
+  }
+
+  /**
+   * Helper to calculate likelihood
+   * 
+   * @param script script to calculate likelihood for each character
+   * @param prob HashMap to store likelihood probability
+   */
+  private static void likelihoodProbCalculate(String script, HashMap<String, Double> prob) {
+    int total_characters = script.length();
+
+    for(char target : alphabet) {
+      prob.put(String.valueOf(target),
+          (double)(script.length() - script.replace(String.valueOf(target), "").length()) / total_characters);
+    }
   }
 }
